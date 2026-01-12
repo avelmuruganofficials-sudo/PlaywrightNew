@@ -1,4 +1,4 @@
-pipeline {
+upipeline {
     agent any
 
     triggers {
@@ -46,7 +46,7 @@ pipeline {
 
         success {
             emailext(
-                to: 'a.velmuruganofficials@gmail.com',
+                to: 'velmurugan@stepladdersolutions.com',
                 subject: '✅ Jenkins Playwright Build SUCCESS',
                 body: """
                 Build Successful!
@@ -60,7 +60,7 @@ pipeline {
 
         failure {
             emailext(
-                to: 'a.velmuruganofficials@gmail.com',
+                to: 'velmurugan@stepladdersolutions.com',
                 subject: 'Jenkins Playwright Build FAILED',
                 body: """
                 Build Failed!
@@ -73,3 +73,4 @@ pipeline {
         }
     }
 }
+
