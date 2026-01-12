@@ -43,4 +43,26 @@ pipeline {
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
         }
     }
+    pipeline {
+    agent any
+
+    triggers {
+        cron('H 9 * * *')
+    }
+
+    stages {
+        stage('Install') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Run Playwright Tests') {
+            steps {
+                sh 'npx playwright test'
+            }
+        }
+    }
 }
+}
+
