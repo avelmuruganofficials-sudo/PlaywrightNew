@@ -4,12 +4,8 @@ pipeline {
     triggers {
         cron('H 9 * * *')   // runs daily around 9 AM
     }
-    tools {
-    nodejs 'nodejs'
-}
-
-
-    stages {
+   
+     stages {
 
         stage('Checkout') {
             steps {
@@ -50,7 +46,7 @@ pipeline {
 
         success {
             emailext(
-                to: 'velmurugan@stepladdersolutions.com',
+                to: 'a.velmuruganofficials@gmail.com',
                 subject: '✅ Jenkins Playwright Build SUCCESS',
                 body: """
                 Build Successful!
@@ -64,7 +60,7 @@ pipeline {
 
         failure {
             emailext(
-                to: 'velmurugan@stepladdersolutions.com',
+                to: 'a.velmuruganofficials@gmail.com',
                 subject: 'Jenkins Playwright Build FAILED',
                 body: """
                 Build Failed!
@@ -77,5 +73,6 @@ pipeline {
         }
     }
 }
+
 
 
