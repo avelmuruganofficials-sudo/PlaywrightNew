@@ -1,14 +1,12 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'Node18'
     triggers {
-        cron('H 9 * * *')
-    }
+        cron('H 9 * * *')   // runs daily around 9 AM
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -39,34 +37,39 @@ pipeline {
                 bat 'npx playwright test'
             }
         }
-        stage('Install') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Run Playwright Tests') {
-            steps {
-                sh 'npx playwright test'
-            }
-        }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+            echo 'Pipeline finished'
         }
-          always {
-        emailext(
-            to: 'velmurugan@stepladdersolutions.com',
-            subject: "Build ${currentBuild.currentResult}",
-            body: "Check build: ${BUILD_URL}"
-        )
-    }
-    }
-    
 
+        success {
+            emailext(
+                to: 'a.velmuruganofficials@gmail.com',
+                subject: '✅ Jenkins Playwright Build SUCCESS',
+                body: """
+                Build Successful!
+
+                Job: ${JOB_NAME}
+                Build Number: ${BUILD_NUMBER}
+                URL: ${BUILD_URL}
+                """
+            )
+        }
+
+        failure {
+            emailext(
+                to: 'a.velmuruganofficials@gmail.com',
+                subject: 'Jenkins Playwright Build FAILED',
+                body: """
+                Build Failed!
+
+                Job: ${JOB_NAME}
+                Build Number: ${BUILD_NUMBER}
+                Check logs: ${BUILD_URL}
+                """
+            )
+        }
+    }
 }
-
-
-
