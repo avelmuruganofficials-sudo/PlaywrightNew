@@ -1,9 +1,13 @@
-upipeline {
+pipeline {
     agent any
 
     triggers {
         cron('H 9 * * *')   // runs daily around 9 AM
     }
+    tools {
+    nodejs 'nodejs'
+}
+
 
     stages {
 
@@ -73,4 +77,5 @@ upipeline {
         }
     }
 }
+
 
