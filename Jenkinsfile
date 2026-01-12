@@ -64,5 +64,16 @@ pipeline {
         }
     }
 }
+post {
+    always {
+        emailext(
+            to: 'velmurugan@stepladdersolutions.com',
+            subject: "Build ${currentBuild.currentResult}",
+            body: "Check build: ${BUILD_URL}"
+        )
+    }
 }
+
+}
+
 
