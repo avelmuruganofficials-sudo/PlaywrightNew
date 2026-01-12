@@ -3,6 +3,9 @@ pipeline {
 
     tools {
         nodejs 'Node18'
+    triggers {
+        cron('H 9 * * *')
+    }
     }
 
     stages {
@@ -36,21 +39,6 @@ pipeline {
                 bat 'npx playwright test'
             }
         }
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
-        }
-    }
-    pipeline {
-    agent any
-
-    triggers {
-        cron('H 9 * * *')
-    }
-
-    stages {
         stage('Install') {
             steps {
                 sh 'npm install'
@@ -63,17 +51,22 @@ pipeline {
             }
         }
     }
-}
-post {
-    always {
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+        }
+          always {
         emailext(
             to: 'velmurugan@stepladdersolutions.com',
             subject: "Build ${currentBuild.currentResult}",
             body: "Check build: ${BUILD_URL}"
         )
     }
-}
+    }
+    
 
 }
+
 
 
